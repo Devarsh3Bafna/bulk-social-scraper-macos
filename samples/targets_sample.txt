@@ -1,0 +1,7 @@
+# Line-by-line targets for Bulk Social Media Scraper
+# Format: platform:target OR full URL
+reddit:technology
+reddit:webdev
+youtube:search:macos automation
+twitter:github
+https://www.reddit.com/r/swift/

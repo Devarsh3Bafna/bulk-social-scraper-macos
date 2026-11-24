@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.bulkscraper.agent</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/env</string>
+        <string>bash</string>
+        <string>-c</string>
+        <string>cd "$SCRAPER_DIR" && [ -f .venv/bin/activate ] && source .venv/bin/activate; python3 -m scraper.cli --file samples/targets_sample.csv --export csv,json,sqlite,html</string>
+    </array>
+    <!-- Run once daily at 9:00 AM -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>9</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/bulkscraper_launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/bulkscraper_launchd_error.log</string>
+</dict>
+</plist>

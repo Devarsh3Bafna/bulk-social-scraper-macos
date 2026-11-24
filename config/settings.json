@@ -1,0 +1,33 @@
+{
+  "concurrency": 3,
+  "request_delay_seconds": 1.5,
+  "max_retries": 3,
+  "timeout_seconds": 20,
+  "enable_macos_notifications": true,
+  "sound_effects": true,
+  "default_sound": "Glass",
+  "completion_sound": "Hero",
+  "download_media": true,
+  "max_media_per_target": 25,
+  "output_formats": ["csv", "json", "sqlite"],
+  "output_directory": "output",
+  "downloads_directory": "downloads",
+  "proxies": [],
+  "rate_limits_per_platform": {
+    "instagram": {"delay": 2.5, "burst": 5},
+    "twitter": {"delay": 2.0, "burst": 10},
+    "reddit": {"delay": 1.0, "burst": 20},
+    "tiktok": {"delay": 2.0, "burst": 8},
+    "youtube": {"delay": 1.5, "burst": 15},
+    "pinterest": {"delay": 1.5, "burst": 10},
+    "linkedin": {"delay": 3.0, "burst": 5}
+  },
+  "meta_api": {
+    "app_id": "1099914986002045",
+    "app_secret": "Athea@123",
+    "page_id": "1133988073127756",
+    "page_access_token": "EAAPoXeoGFn0BS5gYQNGNsvRyyLfFDRtJTDILhrsQeUY0T0SQ6T2xJo3TLZBEUzDhsZBqR9nMbQgoXSMb1ZCaqAkxsZCYNCmkl752gw1kkYpi0OP0Q1B6yj1quvOCTngD9ZC9Cmy3vMFyaCfZCoDlhLQbX43PdJWVeeSJk17LhaIyq1AD2PyEefbD9g6N75x94Bj1ZC1ZAgZBWKPqMEbEYgZBg5yTJdobKVRk8E1HOjoI7TudB4ZBMjbQHfbewOSZCZBEZD",
+    "api_version": "v26.0",
+    "social_sync_interval_minutes": 7
+  }
+}

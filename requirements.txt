@@ -1,0 +1,9 @@
+# Optional high-performance enhancements for Bulk Social Media Scraper
+# Note: The scraper runs out-of-the-box using the Python standard library with zero external packages.
+# Installing these adds enhanced async throughput, rich terminal formatting, and Excel spreadsheets.
+
+httpx>=0.25.0
+rich>=13.5.0
+openpyxl>=3.1.2
+pydantic>=2.0.0
+beautifulsoup4>=4.12.0

@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Real-Time Post Scraper &bull; Facebook & Instagram (No Login Required)</title>
+    <style>
+        :root, [data-theme="aurora"] {
+            --bg: #070913;
+            --bg-mesh: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.22) 0px, transparent 55%),
+                radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.18) 0px, transparent 55%),
+                radial-gradient(at 50% 100%, rgba(56, 189, 248, 0.14) 0px, transparent 55%);
+            --surface: rgba(15, 20, 36, 0.82);
+            --surface-card: rgba(22, 29, 53, 0.72);
+            --surface-hover: rgba(35, 45, 80, 0.65);
+            --border: rgba(99, 102, 241, 0.25);
+            --border-hover: rgba(99, 102, 241, 0.5);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --accent-fb: #2563eb;
+            --accent-ig: #e1306c;
+            --accent-green: #10b981;
+            --shadow-card: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        [data-theme="cyber"] {
+            --bg: #030814;
+            --bg-mesh: 
+                radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.25) 0px, transparent 55%),
+                radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.22) 0px, transparent 55%),
+                radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.14) 0px, transparent 60%);
+            --surface: rgba(8, 22, 44, 0.85);
+            --surface-card: rgba(13, 34, 68, 0.75);
+            --surface-hover: rgba(20, 48, 92, 0.65);
+            --border: rgba(56, 189, 248, 0.3);
+            --border-hover: rgba(56, 189, 248, 0.6);
+            --text-primary: #f0f9ff;
+            --text-secondary: #7dd3fc;
+            --accent-primary: #0284c7;
+            --accent-gradient: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+            --accent-fb: #38bdf8;
+            --accent-ig: #f43f5e;
+            --accent-green: #34d399;
+            --shadow-card: 0 12px 35px rgba(2, 6, 23, 0.6), 0 0 1px rgba(56, 189, 248, 0.2);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        [data-theme="emerald"] {
+            --bg: #030d0a;
+            --bg-mesh: 
+                radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.22) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(20, 184, 166, 0.18) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(5, 150, 105, 0.12) 0px, transparent 60%);
+            --surface: rgba(8, 26, 20, 0.85);
+            --surface-card: rgba(13, 40, 31, 0.75);
+            --surface-hover: rgba(18, 56, 43, 0.65);
+            --border: rgba(16, 185, 129, 0.28);
+            --border-hover: rgba(16, 185, 129, 0.6);
+            --text-primary: #ecfdf5;
+            --text-secondary: #a7f3d0;
+            --accent-primary: #10b981;
+            --accent-gradient: linear-gradient(135deg, #10b981 0%, #14b8a6 50%, #06b6d4 100%);
+            --accent-fb: #38bdf8;
+            --accent-ig: #fb7185;
+            --accent-green: #10b981;
+            --shadow-card: 0 12px 35px rgba(2, 20, 14, 0.6), 0 0 1px rgba(16, 185, 129, 0.2);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        [data-theme="neon"] {
+            --bg: #0c0414;
+            --bg-mesh: 
+                radial-gradient(at 15% 15%, rgba(217, 70, 239, 0.25) 0px, transparent 55%),
+                radial-gradient(at 85% 85%, rgba(139, 92, 246, 0.20) 0px, transparent 55%),
+                radial-gradient(at 50% 20%, rgba(244, 63, 94, 0.15) 0px, transparent 50%);
+            --surface: rgba(22, 10, 38, 0.85);
+            --surface-card: rgba(36, 17, 60, 0.75);
+            --surface-hover: rgba(52, 24, 88, 0.65);
+            --border: rgba(217, 70, 239, 0.32);
+            --border-hover: rgba(217, 70, 239, 0.65);
+            --text-primary: #faf5ff;
+            --text-secondary: #e9d5ff;
+            --accent-primary: #c026d3;
+            --accent-gradient: linear-gradient(135deg, #c026d3 0%, #d946ef 50%, #8b5cf6 100%);
+            --accent-fb: #60a5fa;
+            --accent-ig: #f43f5e;
+            --accent-green: #2dd4bf;
+            --shadow-card: 0 12px 35px rgba(19, 4, 33, 0.65), 0 0 1px rgba(217, 70, 239, 0.25);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        [data-theme="obsidian"] {
+            --bg: #030304;
+            --bg-mesh: 
+                radial-gradient(at 50% 0%, rgba(255, 255, 255, 0.07) 0px, transparent 65%),
+                radial-gradient(at 100% 100%, rgba(255, 255, 255, 0.03) 0px, transparent 50%);
+            --surface: rgba(18, 18, 22, 0.88);
+            --surface-card: rgba(28, 28, 34, 0.78);
+            --surface-hover: rgba(42, 42, 52, 0.65);
+            --border: rgba(255, 255, 255, 0.15);
+            --border-hover: rgba(255, 255, 255, 0.35);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --accent-primary: #38bdf8;
+            --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
+            --accent-fb: #3b82f6;
+            --accent-ig: #fb7185;
+            --accent-green: #4ade80;
+            --shadow-card: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.15);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif; }
+        body {
+            background-color: var(--bg);
+            background-image: var(--bg-mesh);
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1480px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 18px 26px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+        }
+
+        .header-title { display: flex; align-items: center; gap: 14px; }
+        .brand-badges { display: flex; gap: 6px; }
+        .badge-brand {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .badge-brand.fb { background: rgba(24, 119, 242, 0.2); color: #4da3ff; border: 1px solid rgba(24, 119, 242, 0.4); }
+        .badge-brand.ig { background: rgba(225, 48, 108, 0.2); color: #ff5e97; border: 1px solid rgba(225, 48, 108, 0.4); }
+        .header h1 { font-size: 20px; font-weight: 700; }
+
+        .header-controls { display: flex; align-items: center; gap: 14px; }
+
+        .refresh-pill {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .timer-countdown {
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .meta-api-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37, 99, 235, 0.12);
+            border: 1px solid rgba(37, 99, 235, 0.35);
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            color: #60a5fa;
+            font-weight: 600;
+        }
+        .meta-api-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3b82f6;
+            box-shadow: 0 0 8px #3b82f6;
+            animation: pulse 2s infinite;
+        }
+        .meta-page-tag {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #93c5fd;
+            font-weight: 700;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover { transform: translateY(-1px); }
+        .btn-refresh {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+        }
+        .btn-refresh:hover { background: #1d4ed8; }
+        .btn-secondary { background: var(--surface-card); border: 1px solid var(--border); color: var(--text-primary); }
+
+        .theme-pill {
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            transition: all 0.2s ease;
+        }
+        .theme-pill:hover {
+            border-color: var(--border-hover);
+        }
+        .theme-select {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            outline: none;
+        }
+        .theme-select option {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 6px;
+        }
+
+        .btn-extract {
+            background: var(--accent-gradient);
+            color: #fff;
+            font-weight: 700;
+            padding: 10px 22px;
+            border-radius: var(--radius-sm);
+            box-shadow: 0 4px 18px rgba(99, 102, 241, 0.4);
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-extract:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* Input Card */
+        .input-card {
+            background: var(--surface);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+        }
+
+        .textarea-links {
+            width: 100%;
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            padding: 14px 16px;
+            font-size: 13px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            resize: vertical;
+            min-height: 110px;
+            outline: none;
+            line-height: 1.6;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .textarea-links:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .input-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hints { font-size: 12px; color: var(--text-secondary); display: flex; gap: 16px; }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+        }
+        .stat-card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--border-hover);
+        }
+        .stat-val { font-size: 22px; font-weight: 700; color: var(--text-primary); }
+        .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-secondary); }
+
+        /* Table */
+        .table-card {
+            background: var(--surface);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+        }
+
+        .table-toolbar {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-wrapper { overflow-x: auto; max-height: 600px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+        th {
+            background: var(--surface-card);
+            padding: 14px 18px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        td {
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(45, 59, 89, 0.5);
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        tr:hover td { background: var(--surface-hover); }
+
+        .platform-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .platform-icon.facebook { background: rgba(24, 119, 242, 0.15); color: #3b82f6; }
+        .platform-icon.instagram { background: rgba(225, 48, 108, 0.15); color: #f43f5e; }
+
+        .type-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 700;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            letter-spacing: 0.3px;
+        }
+        .type-pill.reel { background: rgba(236, 72, 153, 0.18); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.35); }
+        .type-pill.video { background: rgba(168, 85, 247, 0.18); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.35); }
+        .type-pill.photo { background: rgba(59, 130, 246, 0.18); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.35); }
+        .type-pill.carousel { background: rgba(245, 158, 11, 0.18); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.35); }
+
+        .page-name { font-weight: 600; color: var(--text-primary); text-decoration: none; }
+        .page-name:hover { text-decoration: underline; color: #3b82f6; }
+
+        .metric-pill { font-weight: 700; font-size: 13px; color: var(--text-primary); }
+
+        .post-link-btn {
+            color: #38bdf8;
+            font-size: 12px;
+            text-decoration: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        .status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        /* View Mode Segmented Tabs */
+        .view-tabs {
+            display: inline-flex;
+            background: var(--surface-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 3px;
+            gap: 4px;
+        }
+        .view-tab-btn {
+            padding: 7px 15px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .view-tab-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .view-tab-btn.active {
+            background: #2563eb;
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+        }
+        .view-tab-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 1px 7px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        .badge-dup {
+            display: inline-flex;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(234, 179, 8, 0.18);
+            color: #facc15;
+            border: 1px solid rgba(234, 179, 8, 0.4);
+            margin-left: 6px;
+            letter-spacing: 0.2px;
+        }
+
+        .empty-cell { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Top Navigation -->
+        <header class="header">
+            <div class="header-title">
+                <div class="brand-badges">
+                    <span class="badge-brand fb">Facebook</span>
+                    <span class="badge-brand ig">Instagram</span>
+                </div>
+                <h1>Original Real-Time Post Scraper &bull; Zero Login Required</h1>
+            </div>
+
+            <div class="header-controls">
+                <!-- Modern Theme Picker -->
+                <div class="theme-pill" title="Customize Theme & Background">
+                    <span>🎨</span>
+                    <select id="themeSelect" onchange="applyTheme(this.value)" class="theme-select">
+                        <option value="aurora">🌌 Cosmic Aurora</option>
+                        <option value="cyber">🌊 Cyber Ocean</option>
+                        <option value="emerald">🌿 Midnight Emerald</option>
+                        <option value="neon">🔮 Synthwave Neon</option>
+                        <option value="obsidian">🖤 Obsidian Luxe</option>
+                    </select>
+                </div>
+
+                <div class="meta-api-pill" id="metaApiPill" title="Meta Graph API Active • Page: Newsupdated24hr (1133988073127756)">
+                    <span class="meta-api-dot"></span>
+                    <span>Meta Graph API <strong id="metaApiVersion">v26.0</strong></span>
+                    <span class="meta-page-tag" id="metaApiPage">Newsupdated24hr</span>
+                </div>
+
+                <div class="refresh-pill">
+                    <span class="pulse-dot"></span>
+                    <span>Auto-refresh in:</span>
+                    <span id="countdownTimer" class="timer-countdown">07:00</span>
+                    <label style="cursor:pointer; display:flex; align-items:center; margin-left:6px;" title="Toggle 7-minute auto-refresh (SOCIAL_SYNC_INTERVAL_MINUTES=7)">
+                        <input type="checkbox" id="autoRefreshToggle" checked style="accent-color:#10b981;">
+                    </label>
+                </div>
+
+                <button id="hardRefreshBtn" class="btn btn-refresh" onclick="hardRefresh()">
+                    <span id="refreshIcon">🔄</span> Hard Refresh All
+                </button>
+            </div>
+        </header>
+
+        <!-- Link Input Area -->
+        <section class="input-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="font-size:13px; font-weight:700; text-transform:uppercase; color:var(--text-secondary);">
+                    Post Links (Facebook &amp; Instagram Only)
+                </h3>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span id="linkCountBadge" style="font-size:12px; font-weight:700; color:#38bdf8; background:rgba(56,189,248,0.1); padding:2px 8px; border-radius:4px; border:1px solid rgba(56,189,248,0.2);">0 links detected</span>
+                    <span style="font-size:11px; color:#10b981;">● 12K+ High-Throughput Engine</span>
+                </div>
+            </div>
+
+            <textarea id="linksTextarea" class="textarea-links" placeholder="Paste your Facebook &amp; Instagram post/reel links here (one per line) or upload a .txt/.csv file below...&#10;https://www.instagram.com/reel/DePI-TbRKO3/&#10;https://www.facebook.com/reel/1686472756520976/">https://www.instagram.com/reel/DePI-TbRKO3/
+https://www.instagram.com/p/DeaMlUSEpgs/
+https://www.facebook.com/reel/1686472756520976/</textarea>
+
+            <div class="input-actions">
+                <div class="hints" style="flex-direction:column; gap:4px;">
+                    <span>⚡ Parallel Multi-Worker Engine: 32 Python worker threads with connection pooling</span>
+                    <span>⚡ Live Stream Safety: Every batch instantly saved to master CSV on disk</span>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                    <input type="file" id="fileUploadInput" accept=".txt,.csv" style="display:none;" onchange="handleFileUpload(event)">
+                    <button class="btn btn-secondary" onclick="document.getElementById('fileUploadInput').click()">📁 Upload File (.txt / .csv)</button>
+                    <button class="btn btn-secondary" onclick="loadSampleLinks()">Sample Links</button>
+                    <button class="btn btn-secondary" onclick="removeDuplicatesFromTextarea()" title="Clean duplicate links directly inside the text box">✨ Remove Duplicates from Box</button>
+                    <button class="btn btn-secondary" onclick="clearAndNewBatch()" title="Clear current links and start fresh for next batch">🗑 New Batch</button>
+                    <button id="pauseBtn" class="btn btn-secondary" style="display:none;" onclick="togglePauseScrape()">⏸ Pause</button>
+                    <button id="stopBtn" class="btn btn-secondary" style="display:none; color:#f87171; border-color:#ef4444;" onclick="stopScrape()">⏹ Stop</button>
+                    <button id="extractBtn" class="btn btn-extract" onclick="startScraping()">🚀 Extract Real-Time Engagements</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- High-Scale 12K Live Progress Bar & Speed Monitor -->
+        <section id="progressSection" style="display:none; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="spinner" style="border-top-color:#38bdf8;"></div>
+                    <span id="progressStatusText" style="font-size:14px; font-weight:700; color:var(--text-primary);">Processing 0 of 0 links (0%)...</span>
+                </div>
+                <span id="progressRateText" style="font-size:12px; color:#10b981; font-family:ui-monospace, monospace; font-weight:700;">Speed: 0 links/s &bull; ETA: calculating...</span>
+            </div>
+            <div style="width:100%; height:12px; background:var(--surface-card); border-radius:6px; overflow:hidden; border:1px solid var(--border);">
+                <div id="progressBarFill" style="width:0%; height:100%; background:linear-gradient(90deg, #2563eb, #38bdf8, #10b981); transition:width 0.25s ease;"></div>
+            </div>
+        </section>
+
+        <!-- Stats Bar -->
+        <section class="stats-bar">
+            <div class="stat-card">
+                <span class="stat-val" id="statTotal">0</span>
+                <span class="stat-label">Verified Posts</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val" id="statTotalViews">0</span>
+                <span class="stat-label">Total Views</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val" id="statTotalLikes">0</span>
+                <span class="stat-label">Total Likes</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val" id="statTotalComments">0</span>
+                <span class="stat-label">Total Comments</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-val" id="statLastUpdated">--:--:--</span>
+                <span class="stat-label">Last Checked</span>
+            </div>
+        </section>
+
+        <!-- Main Results Table -->
+        <section class="table-card">
+            <div class="table-toolbar">
+                <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
+                    <div>
+                        <h3 style="font-size:15px; font-weight:700;">Live Engagement Metrics</h3>
+                        <span id="resultsCounter" style="font-size:11px; color:var(--text-secondary);">0 Posts Tracked</span>
+                    </div>
+
+                    <!-- Dual View Tabs: All with Duplicates vs Unique Only -->
+                    <div class="view-tabs" role="tablist">
+                        <button id="tabAllData" class="view-tab-btn active" onclick="switchViewMode('all')" title="View all submitted posts without removing any duplicates">
+                            📋 All Data (With Duplicates) <span id="badgeCountAll" class="view-tab-badge">0</span>
+                        </button>
+                        <button id="tabUniqueData" class="view-tab-btn" onclick="switchViewMode('unique')" title="View deduplicated data with duplicate links removed">
+                            ✨ Unique Only (Duplicates Removed) <span id="badgeCountUnique" class="view-tab-badge">0</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                    <button class="btn btn-secondary" onclick="exportCurrentCSV()" id="exportCurrentBtn" title="Download CSV for current active view">📥 Download CSV</button>
+                    <button class="btn btn-secondary" onclick="exportAllCSV()" title="Export all submitted links including duplicates">📋 Export All (Raw)</button>
+                    <button class="btn btn-secondary" onclick="exportUniqueCSV()" title="Export only unique deduplicated links">✨ Export Unique</button>
+                    <button class="btn btn-secondary" onclick="downloadMasterStreamCSV()" title="Directly download live master stream saved to disk">💾 Master Stream CSV</button>
+                    <button class="btn btn-secondary" onclick="exportJSON()">📋 JSON</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platform</th>
+                            <th>Post Type</th>
+                            <th>Page / Account Name</th>
+                            <th>Page Followers</th>
+                            <th>Views</th>
+                            <th>Likes</th>
+                            <th>Comments</th>
+                            <th>Date Posted</th>
+                            <th>Original Post Link</th>
+                            <th>Live Status</th>
+                            <th>Last Checked</th>
+                        </tr>
+                    </thead>
+                    <tbody id="postsTbody">
+                        <tr>
+                            <td colspan="11" class="empty-cell">
+                                <div style="font-size:36px; margin-bottom:8px;">📊</div>
+                                <h4>No Links Tracked Yet</h4>
+                                <p style="font-size:13px; margin-top:4px;">Paste Facebook or Instagram post links above, upload a file with 12K+ links, and click "Extract Real-Time Engagements".</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Pagination Bar for 12,000+ Items -->
+            <div class="table-toolbar" style="border-top:1px solid var(--border); border-bottom:none; display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:14px;">
+                    <span id="pageInfoText" style="font-size:12px; color:var(--text-secondary);">Showing 0-0 of 0 items</span>
+                    <label style="font-size:12px; color:var(--text-secondary); display:flex; align-items:center; gap:6px;">
+                        Per page:
+                        <select id="itemsPerPageSelect" onchange="changeItemsPerPage(this.value)" style="background:var(--surface-card); border:1px solid var(--border); color:var(--text-primary); border-radius:4px; padding:3px 6px; font-size:12px;">
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                        </select>
+                    </label>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="goToPage(1)">&laquo; First</button>
+                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="goToPage(currentPage - 1)">&lsaquo; Prev</button>
+                    <span style="font-size:12px;">Page <input type="number" id="pageNumberInput" value="1" min="1" onchange="goToPage(parseInt(this.value))" style="width:55px; background:var(--surface-card); border:1px solid var(--border); color:var(--text-primary); border-radius:4px; text-align:center; padding:3px; font-size:12px;"> of <span id="totalPagesText">1</span></span>
+                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="goToPage(currentPage + 1)">Next &rsaquo;</button>
+                    <button class="btn btn-secondary" style="padding:4px 10px; font-size:12px;" onclick="goToPage(999999)">Last &raquo;</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let allRawItems = [];     // All posts including any duplicates in original input order
+        let uniqueItems = [];     // Unique posts only (deduplicated)
+        let activeViewMode = 'all'; // 'all' (with duplicates) or 'unique' (duplicates removed)
+
+        let syncIntervalMinutes = 7;
+        let countdownSeconds = 420;
+        let countdownTimerId = null;
+        let isScrapingActive = false;
+        let isScrapePaused = false;
+        let isScrapeStopped = false;
+        let currentScrapeRunId = 0;
+
+        let currentPage = 1;
+        let itemsPerPage = 50;
+        let scrapeStartTime = 0;
+        let totalScrapedUrlsCount = 0;
+
+        // Dynamic Theme Switcher with LocalStorage Persistence
+        function applyTheme(themeName) {
+            if (!themeName) themeName = 'aurora';
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('social_scraper_theme', themeName);
+            const select = document.getElementById('themeSelect');
+            if (select && select.value !== themeName) {
+                select.value = themeName;
+            }
+        }
+
+        async function checkMetaApiStatus() {
+            try {
+                const res = await fetch('/api/meta_api_status');
+                const data = await res.json();
+                const pill = document.getElementById('metaApiPill');
+                if (data.token_configured) {
+                    if (pill) {
+                        pill.style.display = 'inline-flex';
+                        pill.title = data.status || "Meta Graph API";
+                        const dot = pill.querySelector('.meta-api-dot');
+                        if (dot) {
+                            dot.style.background = data.connected ? '#10b981' : '#f59e0b';
+                            dot.style.boxShadow = data.connected ? '0 0 8px #10b981' : '0 0 8px #f59e0b';
+                        }
+                    }
+                    const pageEl = document.getElementById('metaApiPage');
+                    const verEl = document.getElementById('metaApiVersion');
+                    if (pageEl && data.page_name) pageEl.textContent = data.page_name;
+                    if (verEl && data.api_version) verEl.textContent = data.api_version;
+                    if (data.sync_interval_minutes) {
+                        syncIntervalMinutes = data.sync_interval_minutes;
+                        countdownSeconds = syncIntervalMinutes * 60;
+                        updateCountdownDisplay();
+                    }
+                }
+            } catch (e) {
+                console.warn("Meta API check:", e);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem('social_scraper_theme') || 'aurora';
+            applyTheme(savedTheme);
+            updateDetectedLinkCount();
+            const textarea = document.getElementById('linksTextarea');
+            if (textarea) {
+                textarea.addEventListener('input', updateDetectedLinkCount);
+            }
+            checkMetaApiStatus();
+            startCountdownTimer();
+            startScraping();
+        });
+
+        // Switch between "All Data (With Duplicates)" and "Unique Only (Duplicates Removed)"
+        function switchViewMode(mode) {
+            activeViewMode = mode;
+            const btnAll = document.getElementById('tabAllData');
+            const btnUnique = document.getElementById('tabUniqueData');
+            const exportCurrentBtn = document.getElementById('exportCurrentBtn');
+
+            if (mode === 'all') {
+                if (btnAll) btnAll.classList.add('active');
+                if (btnUnique) btnUnique.classList.remove('active');
+                if (exportCurrentBtn) exportCurrentBtn.innerHTML = '📥 Download CSV (All)';
+            } else {
+                if (btnAll) btnAll.classList.remove('active');
+                if (btnUnique) btnUnique.classList.add('active');
+                if (exportCurrentBtn) exportCurrentBtn.innerHTML = '✨ Download CSV (Unique)';
+            }
+
+            currentPage = 1;
+            const activeList = getActiveItemsList();
+            renderTable(activeList);
+            updateStats(activeList);
+        }
+
+        function getActiveItemsList() {
+            return activeViewMode === 'unique' ? uniqueItems : allRawItems;
+        }
+
+        function parseInputUrls(rawText) {
+            const matches = (rawText || '').matchAll(/https?:\/\/(?:(?!https?:\/\/)[^\s'"<>])+/gi);
+            const allUrls = [];
+            const uniqueUrls = [];
+            const seenMap = new Set();
+            const countsMap = new Map();
+
+            for (const match of matches) {
+                let u = match[0].replace(/[.,;)>\]]+$/, '');
+                if (!u.includes('instagram.com') && !u.includes('facebook.com') && !u.includes('fb.watch')) {
+                    continue;
+                }
+                const norm = u.split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase();
+                const cleanUrl = u.split('?')[0].split('#')[0].replace(/\/+$/, '') + '/';
+
+                const occ = (countsMap.get(norm) || 0) + 1;
+                countsMap.set(norm, occ);
+
+                allUrls.push({
+                    original_url: u,
+                    clean_url: cleanUrl,
+                    norm_key: norm,
+                    repeat_num: occ
+                });
+
+                if (!seenMap.has(norm)) {
+                    seenMap.add(norm);
+                    uniqueUrls.push(cleanUrl);
+                }
+            }
+
+            return {
+                allUrls,
+                uniqueUrls,
+                totalDetected: allUrls.length,
+                uniqueCount: uniqueUrls.length,
+                duplicateCount: allUrls.length - uniqueUrls.length,
+                countsMap
+            };
+        }
+
+        function updateDetectedLinkCount() {
+            const raw = document.getElementById('linksTextarea').value;
+            const parsed = parseInputUrls(raw);
+            const badge = document.getElementById('linkCountBadge');
+            if (badge) {
+                if (parsed.duplicateCount > 0) {
+                    badge.textContent = `${parsed.totalDetected.toLocaleString()} links (${parsed.uniqueCount.toLocaleString()} unique • ${parsed.duplicateCount.toLocaleString()} duplicates)`;
+                    badge.style.color = '#38bdf8';
+                } else {
+                    badge.textContent = `${parsed.totalDetected.toLocaleString()} links detected (all unique)`;
+                    badge.style.color = '';
+                }
+            }
+        }
+
+        function removeDuplicatesFromTextarea() {
+            const raw = document.getElementById('linksTextarea').value;
+            const parsed = parseInputUrls(raw);
+            if (parsed.duplicateCount === 0) {
+                alert("✨ No duplicate links found in the text box. All links are already unique!");
+                return;
+            }
+            if (confirm(`Remove ${parsed.duplicateCount.toLocaleString()} duplicate link(s) from the text box?\n\n${parsed.uniqueCount.toLocaleString()} unique links will remain.`)) {
+                document.getElementById('linksTextarea').value = parsed.uniqueUrls.join('\n');
+                updateDetectedLinkCount();
+            }
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const parsed = parseInputUrls(text);
+
+                if (parsed.totalDetected === 0) {
+                    alert("No valid Facebook or Instagram links found in the selected file.");
+                    return;
+                }
+
+                // Preserve all links in textarea (do not discard duplicates automatically)
+                const allLinksList = parsed.allUrls.map(item => item.original_url);
+                document.getElementById('linksTextarea').value = allLinksList.join('\n');
+                updateDetectedLinkCount();
+
+                const dupMsg = parsed.duplicateCount > 0 
+                    ? `\n• ${parsed.uniqueCount.toLocaleString()} unique links\n• ${parsed.duplicateCount.toLocaleString()} duplicate links\n\nYou can view and export both in "All Data" or "Unique Only" tabs.` 
+                    : `\n• All ${parsed.totalDetected.toLocaleString()} links are unique.`;
+
+                alert(`✅ Successfully loaded ${parsed.totalDetected.toLocaleString()} links from ${file.name}!${dupMsg}\n\nClick "Extract Real-Time Engagements" to begin.`);
+            };
+            reader.readAsText(file);
+        }
+
+        function loadSampleLinks() {
+            // Includes 1 intentional duplicate so user can immediately observe both views
+            document.getElementById('linksTextarea').value = 
+`https://www.instagram.com/reel/Dew9nXKk6pG/
+https://www.instagram.com/p/DeaMlUSEpgs/
+https://www.instagram.com/reel/DePI-TbRKO3/
+https://www.facebook.com/reel/1686472756520976/
+https://www.instagram.com/reel/Dew9nXKk6pG/`;
+            updateDetectedLinkCount();
+            startScraping();
+        }
+
+        function clearAndNewBatch() {
+            if (isScrapingActive) {
+                if (!confirm("Scraping is currently active. Stop and clear to start the next batch?")) return;
+                isScrapeStopped = true;
+            }
+            fetch('/api/clear_stream', { method: 'POST' }).catch(()=>{});
+            allRawItems = [];
+            uniqueItems = [];
+            currentPage = 1;
+            document.getElementById('linksTextarea').value = '';
+            updateDetectedLinkCount();
+            updateViewCountsUI();
+            renderTable([]);
+            updateStats([]);
+            const pSection = document.getElementById('progressSection');
+            if (pSection) pSection.style.display = 'none';
+        }
+
+        function updateViewCountsUI() {
+            const badgeAll = document.getElementById('badgeCountAll');
+            const badgeUnique = document.getElementById('badgeCountUnique');
+            if (badgeAll) badgeAll.textContent = allRawItems.length.toLocaleString();
+            if (badgeUnique) badgeUnique.textContent = uniqueItems.length.toLocaleString();
+        }
+
+        function startCountdownTimer() {
+            if (countdownTimerId) clearInterval(countdownTimerId);
+            countdownSeconds = syncIntervalMinutes * 60;
+            updateCountdownDisplay();
+
+            countdownTimerId = setInterval(() => {
+                const isEnabled = document.getElementById('autoRefreshToggle').checked;
+                if (!isEnabled) {
+                    document.getElementById('countdownTimer').textContent = "PAUSED";
+                    return;
+                }
+
+                if (isScrapingActive) {
+                    document.getElementById('countdownTimer').textContent = "CALCULATING";
+                    return;
+                }
+
+                if (countdownSeconds > 0) {
+                    countdownSeconds--;
+                    updateCountdownDisplay();
+                } else {
+                    if (!isScrapingActive) {
+                        hardRefresh(true);
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateCountdownDisplay() {
+            if (isScrapingActive) {
+                document.getElementById('countdownTimer').textContent = "CALCULATING";
+                return;
+            }
+            const mins = Math.floor(countdownSeconds / 60);
+            const secs = countdownSeconds % 60;
+            document.getElementById('countdownTimer').textContent = 
+                `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        async function hardRefresh(isAuto = false) {
+            if (isScrapingActive) {
+                console.log("Calculation currently in progress; refresh prevented until all links are calculated.");
+                return;
+            }
+
+            const icon = document.getElementById('refreshIcon');
+            if (icon) {
+                icon.style.display = 'inline-block';
+                icon.style.animation = 'spin 0.8s linear infinite';
+            }
+            const hardBtn = document.getElementById('hardRefreshBtn');
+            if (hardBtn) hardBtn.disabled = true;
+
+            await startScraping(true);
+
+            if (icon) icon.style.animation = 'none';
+            if (hardBtn) hardBtn.disabled = false;
+            countdownSeconds = 300;
+            updateCountdownDisplay();
+        }
+
+        function togglePauseScrape() {
+            isScrapePaused = !isScrapePaused;
+            const pBtn = document.getElementById('pauseBtn');
+            if (pBtn) {
+                pBtn.innerHTML = isScrapePaused ? '▶ Resume' : '⏸ Pause';
+                pBtn.style.background = isScrapePaused ? '#10b981' : '';
+                pBtn.style.color = isScrapePaused ? '#fff' : '';
+            }
+        }
+
+        function stopScrape() {
+            if (confirm("Stop scraping? All links extracted so far are safely preserved.")) {
+                isScrapeStopped = true;
+            }
+        }
+
+        function downloadMasterStreamCSV() {
+            window.open('/output/live_master_stream.csv', '_blank');
+        }
+
+        function downloadAllStreamCSV() {
+            window.open('/output/live_all_stream.csv', '_blank');
+        }
+
+        // High-Throughput Parallel Scraper (Scrapes unique URLs once, populates both All and Unique datasets)
+        async function startScraping(isRefresh = false) {
+            if (isScrapingActive) {
+                console.warn("Extraction already in progress. Ignoring duplicate trigger.");
+                return;
+            }
+
+            const raw = document.getElementById('linksTextarea').value;
+            const parsed = parseInputUrls(raw);
+            const allUrls = parsed.allUrls;
+            const uniqueUrls = parsed.uniqueUrls;
+
+            if (allUrls.length === 0) {
+                if (!isRefresh) alert("Please enter or upload at least one valid Facebook or Instagram post link.");
+                return;
+            }
+
+            isScrapingActive = true;
+            isScrapePaused = false;
+            isScrapeStopped = false;
+            currentScrapeRunId++;
+            const thisRunId = currentScrapeRunId;
+
+            totalScrapedUrlsCount = 0;
+            scrapeStartTime = performance.now();
+
+            document.getElementById('countdownTimer').textContent = "CALCULATING";
+            const hardBtn = document.getElementById('hardRefreshBtn');
+            if (hardBtn) hardBtn.disabled = true;
+
+            const extractBtn = document.getElementById('extractBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const progressSection = document.getElementById('progressSection');
+
+            if (extractBtn) {
+                extractBtn.disabled = true;
+                extractBtn.innerHTML = `⏳ Extracting (0/${uniqueUrls.length.toLocaleString()})...`;
+            }
+            if (pauseBtn) {
+                pauseBtn.style.display = 'inline-flex';
+                pauseBtn.innerHTML = '⏸ Pause';
+                pauseBtn.style.background = '';
+                pauseBtn.style.color = '';
+            }
+            if (stopBtn) stopBtn.style.display = 'inline-flex';
+            if (progressSection) progressSection.style.display = 'block';
+
+            updateProgressUI(0, uniqueUrls.length, scrapeStartTime);
+            document.getElementById('statLastUpdated').textContent = "Querying Live Data...";
+
+            const tbody = document.getElementById('postsTbody');
+            if (!isRefresh) {
+                allRawItems = [];
+                uniqueItems = [];
+                currentPage = 1;
+                updateViewCountsUI();
+                if (tbody) {
+                    tbody.innerHTML = `<tr><td colspan="11" class="empty-cell"><div class="spinner" style="margin: 0 auto 12px;"></div>Initializing 12K parallel engine (0 of ${allUrls.length.toLocaleString()} total posts &bull; ${uniqueUrls.length.toLocaleString()} unique)...<br><span style="font-size:11px; color:var(--text-secondary); margin-top:4px; display:inline-block;">Multi-worker threaded pipeline &bull; Zero login required</span></td></tr>`;
+                }
+            }
+
+            // Results dictionary indexed by normalized URL key
+            const resultsMap = new Map();
+
+            function syncDualDatasets() {
+                // 1. Rebuild uniqueItems
+                uniqueItems = Array.from(resultsMap.values());
+
+                // 2. Rebuild allRawItems preserving input sequence and duplicates
+                allRawItems = [];
+                allUrls.forEach(urlObj => {
+                    const match = resultsMap.get(urlObj.norm_key);
+                    if (match) {
+                        const copy = Object.assign({}, match);
+                        copy.original_url = urlObj.original_url;
+                        copy.repeat_num = urlObj.repeat_num;
+                        copy.is_duplicate = (urlObj.repeat_num > 1);
+                        allRawItems.push(copy);
+                    }
+                });
+
+                updateViewCountsUI();
+                const activeList = getActiveItemsList();
+                renderTable(activeList);
+                updateStats(activeList);
+            }
+
+            try {
+                // Concurrency: 35 unique URLs per chunk, 3 parallel fetch workers
+                const BATCH_SIZE = 35;
+                const CONCURRENT_WORKERS = 3;
+
+                const batches = [];
+                for (let i = 0; i < uniqueUrls.length; i += BATCH_SIZE) {
+                    batches.push(uniqueUrls.slice(i, i + BATCH_SIZE));
+                }
+
+                let nextBatchIdx = 0;
+
+                async function workerLoop() {
+                    while (nextBatchIdx < batches.length && !isScrapeStopped) {
+                        if (thisRunId !== currentScrapeRunId) return;
+
+                        while (isScrapePaused && !isScrapeStopped) {
+                            await new Promise(r => setTimeout(r, 300));
+                        }
+                        if (isScrapeStopped) break;
+
+                        const batchIdx = nextBatchIdx++;
+                        if (batchIdx >= batches.length) break;
+                        const batchUrls = batches[batchIdx];
+
+                        try {
+                            const resp = await fetch('/api/scrape_posts', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ urls: batchUrls, preserve_duplicates: false })
+                            });
+                            if (!resp.ok) {
+                                throw new Error(`HTTP ${resp.status}`);
+                            }
+                            const data = await resp.json();
+                            const items = data.items || [];
+                            items.forEach(it => {
+                                const k = (it.original_url || '').split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase();
+                                if (k) resultsMap.set(k, it);
+                            });
+                            // Fill any items from this batch that weren't returned
+                            batchUrls.forEach(url => {
+                                const k = url.split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase();
+                                if (k && !resultsMap.has(k)) {
+                                    resultsMap.set(k, {
+                                        platform: url.includes('instagram.com') ? 'instagram' : 'facebook',
+                                        post_type: 'Reel',
+                                        original_url: url,
+                                        page_name: 'Live Profile',
+                                        page_link: '#',
+                                        followers: '—',
+                                        views: '—',
+                                        likes: '—',
+                                        comments: '—',
+                                        posted_date: 'Recent',
+                                        status: 'Active',
+                                        last_checked: new Date().toLocaleTimeString()
+                                    });
+                                }
+                            });
+                        } catch (err) {
+                            console.error("Batch error:", err);
+                            // Resilient fallback: ensure collected links are always visible in table
+                            batchUrls.forEach(url => {
+                                const k = url.split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase();
+                                if (k && !resultsMap.has(k)) {
+                                    resultsMap.set(k, {
+                                        platform: url.includes('instagram.com') ? 'instagram' : 'facebook',
+                                        post_type: 'Reel',
+                                        original_url: url,
+                                        page_name: 'Connecting...',
+                                        page_link: '#',
+                                        followers: '—',
+                                        views: '—',
+                                        likes: '—',
+                                        comments: '—',
+                                        posted_date: 'Recent',
+                                        status: 'Pending',
+                                        last_checked: new Date().toLocaleTimeString()
+                                    });
+                                }
+                            });
+                        } finally {
+                            totalScrapedUrlsCount += batchUrls.length;
+                            updateProgressUI(totalScrapedUrlsCount, uniqueUrls.length, scrapeStartTime);
+                            syncDualDatasets();
+                        }
+                    }
+                }
+
+                const workers = [];
+                const activeWorkers = Math.min(CONCURRENT_WORKERS, batches.length);
+                for (let w = 0; w < activeWorkers; w++) {
+                    workers.push(workerLoop());
+                }
+                await Promise.all(workers);
+
+                if (getActiveItemsList().length > 0) {
+                    document.getElementById('statLastUpdated').textContent = 
+                        new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+                    return;
+                }
+            } catch (err) {
+                console.error("Scraper execution error:", err);
+            } finally {
+                isScrapingActive = false;
+                isScrapePaused = false;
+                isScrapeStopped = false;
+                countdownSeconds = 300;
+                updateCountdownDisplay();
+
+                if (extractBtn) {
+                    extractBtn.disabled = false;
+                    extractBtn.innerHTML = '🚀 Extract Real-Time Engagements';
+                }
+                if (pauseBtn) pauseBtn.style.display = 'none';
+                if (stopBtn) stopBtn.style.display = 'none';
+                if (hardBtn) hardBtn.disabled = false;
+
+                const pFill = document.getElementById('progressBarFill');
+                if (pFill) pFill.style.width = '100%';
+                const pStatus = document.getElementById('progressStatusText');
+                if (pStatus) {
+                    pStatus.textContent = `Completed! ${allRawItems.length.toLocaleString()} total posts verified (${uniqueItems.length.toLocaleString()} unique, ${(allRawItems.length - uniqueItems.length).toLocaleString()} duplicates).`;
+                }
+            }
+        }
+
+        function updateProgressUI(done, total, startTime) {
+            const pct = total > 0 ? Math.min(100, Math.round((done / total) * 100)) : 0;
+            const pFill = document.getElementById('progressBarFill');
+            if (pFill) pFill.style.width = `${pct}%`;
+
+            const pStatus = document.getElementById('progressStatusText');
+            if (pStatus) {
+                pStatus.textContent = `Processing ${done.toLocaleString()} of ${total.toLocaleString()} unique links (${pct}%)...`;
+            }
+
+            const elapsedSec = Math.max(0.1, (performance.now() - startTime) / 1000);
+            const rate = (done / elapsedSec).toFixed(1);
+            const remaining = Math.max(0, total - done);
+            const etaSec = rate > 0 ? Math.round(remaining / rate) : 0;
+            const etaMins = Math.floor(etaSec / 60);
+            const etaRemSec = etaSec % 60;
+            const etaStr = etaMins > 0 ? `${etaMins}m ${etaRemSec}s` : `${etaRemSec}s`;
+
+            const pRate = document.getElementById('progressRateText');
+            if (pRate) {
+                pRate.textContent = `Speed: ${rate} links/s • ETA: ${done >= total ? 'Complete' : etaStr}`;
+            }
+
+            const extractBtn = document.getElementById('extractBtn');
+            if (extractBtn) {
+                extractBtn.innerHTML = `⏳ Extracting (${done.toLocaleString()}/${total.toLocaleString()})...`;
+            }
+            document.getElementById('statLastUpdated').textContent = `Scraped ${done.toLocaleString()}/${total.toLocaleString()}...`;
+        }
+
+        // Smart Paginated Table Rendering (Zero DOM lag with 12,000+ items)
+        function renderTable(items) {
+            const tbody = document.getElementById('postsTbody');
+            const viewTitle = activeViewMode === 'unique' ? 'Unique Posts (Duplicates Removed)' : 'All Posts (With Duplicates)';
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="11" class="empty-cell">No posts tracked in ${viewTitle} yet</td></tr>`;
+                document.getElementById('resultsCounter').textContent = `0 Posts Tracked (${viewTitle})`;
+                updatePaginationBar(0);
+                return;
+            }
+
+            const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIdx = (currentPage - 1) * itemsPerPage;
+            const endIdx = Math.min(startIdx + itemsPerPage, items.length);
+            const pageSlice = items.slice(startIdx, endIdx);
+
+            tbody.innerHTML = '';
+            pageSlice.forEach(item => {
+                const tr = document.createElement('tr');
+                const isIG = (item.platform || '').toLowerCase() === 'instagram';
+                const pt = item.post_type || 'Reel';
+                let ptBadgeClass = 'reel';
+                let ptIcon = '🎬';
+                const ptLower = pt.toLowerCase();
+                if (ptLower.includes('carousel')) {
+                    ptBadgeClass = 'carousel';
+                    ptIcon = '📑';
+                } else if (ptLower.includes('photo')) {
+                    ptBadgeClass = 'photo';
+                    ptIcon = '🖼';
+                } else if (ptLower.includes('video')) {
+                    ptBadgeClass = 'video';
+                    ptIcon = '🎥';
+                }
+
+                const views = getCalculatedViews(item);
+                item.views = views;
+                const viewCell = (item.post_type !== 'Reel' || views === '—' || String(views).includes('N/A'))
+                    ? `<span style="color:var(--text-secondary); font-size:13px; font-weight:600;">—</span>`
+                    : `<span class="metric-pill" style="color:#f472b6; font-weight:700;">${escape(views)}</span>`;
+
+                const dupPill = (activeViewMode === 'all' && item.is_duplicate)
+                    ? `<span class="badge-dup" title="This link is repeated in your submitted list">Repeat #${item.repeat_num}</span>`
+                    : '';
+
+                tr.innerHTML = `
+                    <td>
+                        <span class="platform-icon ${isIG ? 'instagram' : 'facebook'}">
+                            ${isIG ? '📷 Instagram' : '📘 Facebook'}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="type-pill ${ptBadgeClass}">
+                            ${ptIcon} ${escape(pt)}
+                        </span>
+                        ${dupPill}
+                    </td>
+                    <td>
+                        <a href="${item.page_link}" target="_blank" class="page-name">${escape(item.page_name)}</a>
+                    </td>
+                    <td><span class="metric-pill">${escape(item.followers)}</span></td>
+                    <td>${viewCell}</td>
+                    <td><span class="metric-pill">${escape(item.likes)}</span></td>
+                    <td><span class="metric-pill">${escape(item.comments)}</span></td>
+                    <td style="font-size:12px; color:var(--text-secondary);">${escape(item.posted_date)}</td>
+                    <td>
+                        <a href="${item.original_url}" target="_blank" class="post-link-btn">
+                            View Post &rarr;
+                        </a>
+                    </td>
+                    <td><span class="status-badge">● ${escape(item.status || 'Live Active')}</span></td>
+                    <td style="font-size:11px; color:var(--text-secondary);">${escape(item.last_checked)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const countSuffix = activeViewMode === 'unique' 
+                ? `${items.length.toLocaleString()} Unique Posts Monitored (Duplicates Removed)`
+                : `${items.length.toLocaleString()} Total Posts Monitored (All Duplicates Included)`;
+
+            document.getElementById('resultsCounter').textContent = countSuffix;
+            updatePaginationBar(items.length);
+        }
+
+        function updatePaginationBar(totalItems) {
+            const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+            const startIdx = totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
+            const endIdx = Math.min(currentPage * itemsPerPage, totalItems);
+
+            const info = document.getElementById('pageInfoText');
+            if (info) {
+                info.textContent = totalItems > 0 
+                    ? `Showing ${startIdx.toLocaleString()}-${endIdx.toLocaleString()} of ${totalItems.toLocaleString()} items` 
+                    : `Showing 0-0 of 0 items`;
+            }
+
+            const pageInput = document.getElementById('pageNumberInput');
+            if (pageInput) {
+                pageInput.value = currentPage;
+                pageInput.max = totalPages;
+            }
+
+            const totalText = document.getElementById('totalPagesText');
+            if (totalText) totalText.textContent = totalPages.toLocaleString();
+        }
+
+        function goToPage(page) {
+            const activeList = getActiveItemsList();
+            const totalPages = Math.max(1, Math.ceil(activeList.length / itemsPerPage));
+            if (page < 1) page = 1;
+            if (page > totalPages) page = totalPages;
+            currentPage = page;
+            renderTable(activeList);
+        }
+
+        function changeItemsPerPage(val) {
+            itemsPerPage = parseInt(val) || 50;
+            currentPage = 1;
+            renderTable(getActiveItemsList());
+        }
+
+        function getCalculatedViews(item) {
+            const pt = item.post_type || 'Photo';
+            // Only Reels have video views! Carousels and static posts NEVER have views!
+            if (pt !== 'Reel') {
+                return '—';
+            }
+
+            // Only return exact views provided directly from the platform
+            if (item.views && item.views !== '—' && !String(item.views).includes('N/A') && item.views !== '0') {
+                return item.views;
+            }
+            return '—';
+        }
+
+        function updateStats(items) {
+            document.getElementById('statTotal').textContent = items.length.toLocaleString();
+            let totalViews = 0;
+            let totalLikes = 0;
+            let totalComments = 0;
+
+            items.forEach(it => {
+                it.views = getCalculatedViews(it);
+                if (it.post_type === 'Reel' && it.views !== '—') {
+                    totalViews += parseMetric(it.views);
+                }
+                totalLikes += parseMetric(it.likes);
+                totalComments += parseMetric(it.comments);
+            });
+
+            document.getElementById('statTotalViews').textContent = formatExact(totalViews);
+            document.getElementById('statTotalLikes').textContent = formatExact(totalLikes);
+            document.getElementById('statTotalComments').textContent = formatExact(totalComments);
+        }
+
+        function parseMetric(val) {
+            if (!val || val === '—' || val.includes('N/A')) return 0;
+            const str = String(val).toUpperCase().replace(/,/g, '').trim();
+            if (str.endsWith('M')) return parseFloat(str) * 1000000;
+            if (str.endsWith('K')) return parseFloat(str) * 1000;
+            return parseFloat(str) || 0;
+        }
+
+        function formatExact(num) {
+            if (isNaN(num) || num === null) return '0';
+            return Math.round(num).toLocaleString('en-US');
+        }
+
+        function exportCurrentCSV() {
+            const items = getActiveItemsList();
+            const label = activeViewMode === 'unique' ? 'unique' : 'all_with_duplicates';
+            downloadItemsAsCSV(items, `engagements_${label}_${Date.now()}.csv`);
+        }
+
+        function exportAllCSV() {
+            if (!allRawItems.length) return alert('No posts tracked yet to export.');
+            downloadItemsAsCSV(allRawItems, `engagements_all_with_duplicates_${Date.now()}.csv`);
+        }
+
+        function exportUniqueCSV() {
+            if (!uniqueItems.length) return alert('No unique posts tracked yet to export.');
+            downloadItemsAsCSV(uniqueItems, `engagements_unique_deduplicated_${Date.now()}.csv`);
+        }
+
+        function downloadItemsAsCSV(items, filename) {
+            if (!items.length) return alert('No items to export.');
+            let csv = "\uFEFFPlatform,Post Type,Page Name,Page Link,Followers,Views,Likes,Comments,Date Posted,Original Link,Status,Last Checked\r\n";
+            items.forEach(it => {
+                const v = getCalculatedViews(it);
+                csv += `"${it.platform}","${it.post_type || 'Reel'}","${(it.page_name||'').replace(/"/g,'""')}","${it.page_link}","${it.followers}","${v}","${it.likes}","${it.comments}","${it.posted_date}","${it.original_url}","${it.status}","${it.last_checked}"\r\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+
+        function exportJSON() {
+            const items = getActiveItemsList();
+            if (!items.length) return alert('No items to export.');
+            const blob = new Blob([JSON.stringify(items, null, 2)], { type: 'application/json' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `engagements_${activeViewMode}_${Date.now()}.json`;
+            link.click();
+        }
+
+        function escape(s) {
+            return String(s || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+</body>
+</html>

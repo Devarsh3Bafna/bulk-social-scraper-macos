@@ -1,0 +1,29 @@
+[
+  {
+    "platform": "reddit",
+    "target": "programming",
+    "limit": 15,
+    "sort": "hot"
+  },
+  {
+    "platform": "reddit",
+    "target": "macgaming",
+    "limit": 10,
+    "sort": "hot"
+  },
+  {
+    "platform": "youtube",
+    "target": "search:apple silicon m4 pro review",
+    "limit": 10
+  },
+  {
+    "platform": "twitter",
+    "target": "tim_cook",
+    "limit": 10
+  },
+  {
+    "platform": "instagram",
+    "target": "nasa",
+    "limit": 10
+  }
+]
