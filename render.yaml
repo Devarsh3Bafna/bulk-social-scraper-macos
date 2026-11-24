@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: bulk-social-scraper
+    runtime: docker
+    plan: free
+    region: oregon
+    envVars:
+      - key: PORT
+        value: 8501
+      - key: SOCIAL_SYNC_INTERVAL_MINUTES
+        value: 7

@@ -15,7 +15,7 @@ require 'time'
 require 'cgi'
 require 'uri'
 
-PORT = 8501
+PORT = (ENV['PORT'] || 8501).to_i
 DIR = File.expand_path(__dir__)
 STATIC_DIR = File.join(DIR, 'scraper', 'web', 'static')
 OUTPUT_DIR = File.join(DIR, 'output')
@@ -76,6 +76,7 @@ end
 
 server = WEBrick::HTTPServer.new(
   Port: PORT,
+  BindAddress: '0.0.0.0',
   Logger: WEBrick::Log.new($stderr, WEBrick::Log::INFO),
   AccessLog: []
 )
@@ -580,7 +581,8 @@ def process_meta_links(urls, preserve_duplicates: false)
 
   extractor_path = File.join(DIR, 'scraper', 'extractor.py')
   require 'open3'
-  stdout, stderr, status = Open3.capture3('/usr/bin/python3', extractor_path, '--stdin', stdin_data: clean_urls.to_json)
+  python_cmd = ENV['PYTHON_BIN'] || (system('which python3 >/dev/null 2>&1') ? 'python3' : '/usr/bin/python3')
+  stdout, stderr, status = Open3.capture3(python_cmd, extractor_path, '--stdin', stdin_data: clean_urls.to_json)
   
   unique_items = []
   if status.success? && !stdout.to_s.strip.empty?
